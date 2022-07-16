@@ -527,7 +527,7 @@ addEventListener('DOMContentLoaded', () => {
                 if (authorURL)
                   edit.querySelector('.imgParent').style.content = 'url(' + encodeHTML(authorURL) + ')';
                 edit.querySelector('.editAuthorLink').value = authorURL;
-                edit.querySelector('.editAuthorUrl').value = embed?.authorUrl;
+                edit.querySelector('.editAuthorUrl').value = embed?.authorUrl || '';
                 edit.querySelector('.editAuthorName').value = embed?.author || '';
                 break;
               case 'title':
@@ -1085,9 +1085,6 @@ addEventListener('DOMContentLoaded', () => {
 
     for (const e of document.querySelectorAll('.gui .item'))
       e.classList.add('active');
-
-    if (!smallerScreen.matches)
-      content.focus();
   })
 
   document.querySelector('.top-btn.menu')?.addEventListener('click', e => {
@@ -1219,7 +1216,7 @@ Object.defineProperty(window, 'json', {
   configurable: true,
   set: val => {
     // Filter non-json keys and empty json keys.
-    const onlyJson = [val.embed]?.filter(j => j.toString() === '[object Object]' && 0 in Object.keys(j));
+    const onlyJson = [val]?.filter(j => j.toString() === '[object Object]' && 0 in Object.keys(j));
 
     jsonObject = val ? val : onlyJson?.length ? onlyJson : {}
 
