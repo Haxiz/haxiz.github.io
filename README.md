@@ -7,7 +7,7 @@ create embeds in a GUI. It will give them the format that [Mantaro](https://mant
 This project is a heavily modified version of the Embed Visualizer made by Glitchii.\
 Source: https://github.com/Glitchii/embedbuilder \
 Site: https://glitchii.github.io/embedbuilder/ \
-License: https://github.com/Glitchii/embedbuilder\LICENSE
+License: https://github.com/Glitchii/embedbuilder/LICENSE
 
 The only files touched are the css, the index file, the builder config
 and the script. Everything else is unmodified and simply bundled with this repo
