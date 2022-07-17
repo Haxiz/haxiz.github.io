@@ -982,7 +982,7 @@ addEventListener('DOMContentLoaded', () => {
 
   picker.fire?.('change', toRGB('#41f097'));
 
-  const colors = document.querySelector('.colors'),
+  let colors = document.querySelector('.colors'),
       hexInput = colors?.querySelector('.hex>div input'),
       typingHex = true, exit = false,
 
@@ -1005,10 +1005,10 @@ addEventListener('DOMContentLoaded', () => {
   picker.on?.('enter', () => {
     if (jsonObject?.color) {
       hexInput.value = jsonObject.color.padStart(6, '0');
-
-      console.log(hexInput.value)
-
       document.querySelector('.hex.incorrect')?.classList.remove('incorrect');
+      //Set color square to current color
+      const colorRGB = toRGB(jsonObject.color, false, false);
+      picker.set(colorRGB[0], colorRGB[1], colorRGB[2], colorRGB[3]);
     }
     colors.classList.add('picking')
   })
