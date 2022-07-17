@@ -999,7 +999,7 @@ addEventListener('DOMContentLoaded', () => {
         editor.setCursor(line, text.length)
       }
 
-      json = JSON.parse("{" + editor.getValue()  + "}");
+      json = JSON.parse("{" + editor.getValue().replace(/"[^"]*(?:""[^"]*)*"/g, s => s.replaceAll("\n", "\\n"))  + "}");
       const dataKeys = Object.keys(json);
 
       if (dataKeys.length && !jsonKeys.some(key => dataKeys.includes(key))) {
