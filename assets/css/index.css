@@ -2233,28 +2233,6 @@ body.reversed .top-btn.menu>.box .item.reverse>.icon::after {
     transform: rotate(90deg);
 }
 
-@keyframes emptyTxtAn {
-    from {
-        opacity: 0;
-    }
-}
-
-.emptyTxt {
-    animation: emptyTxtAn 1s ease;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 30px;
-    line-height: 16px;
-    color: #41444a;
-    font-family: var(--font2);
-    padding: 10px 0;
-    top: 50%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-}
-
 .noDisplay {
     display: none !important;
 }
@@ -2280,20 +2258,6 @@ body.reversed .top-btn.menu>.box .item.reverse>.icon::after {
 .top-btn.clear:hover>svg {
     animation: clearAn 1s ease-in-out forwards;
     transform-origin: top right;
-}
-
-body.emptyContent .messageContent,
-body.emptyEmbed .messageContent+.container,
-body.emptyEmbed .messageContent+.container,
-body.emptyContent .messageContent,
-.emptyTxt {
-    display: none;
-}
-
-body.emptyEmbed.emptyContent .emptyTxt {
-    display: block;
-    position: absolute;
-    top: 800%;
 }
 
 body.no-editor.no-preview .side1 .chooser {

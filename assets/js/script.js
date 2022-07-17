@@ -709,6 +709,7 @@ addEventListener('DOMContentLoaded', () => {
               case 'editAuthorName':
                 embedObj.author ??= {}
                 embedObj.author = value;
+                if (embedObj.author === "") delete embedObj.author
                 buildEmbed({ only: 'embedAuthorName', index: 0 });
                 break;
               case 'editAuthorLink':
@@ -759,8 +760,14 @@ addEventListener('DOMContentLoaded', () => {
             }
           }
 
-          // Display embed elements hidden due to not having content. '.msgEmbed>.container' is embed container.
-          document.querySelectorAll('.msgEmbed>.container')[0]?.querySelector('.emptyEmbed')?.classList.remove('emptyEmbed');
+          if (Object.keys(embedObj).length < 1) {
+            document.querySelector('.gui')?.classList.add('emptyEmbed');
+            document.querySelectorAll('.msgEmbed>.container')[0]?.querySelector('.embed')?.classList.add('emptyEmbed');
+            document.querySelectorAll('.msgEmbed')[0].children[1].innerText = "Empty Embed";
+          } else {
+            document.querySelectorAll('.msgEmbed>.container')[0]?.querySelector('.emptyEmbed')?.classList.remove('emptyEmbed');
+            document.querySelectorAll('.msgEmbed')[0].children[1].innerText = "";
+          }
         }
     }
 
@@ -808,7 +815,10 @@ addEventListener('DOMContentLoaded', () => {
   // Renders embed and message content.
   buildEmbed = ({ jsonData, only, index = 0 } = {}) => {
     if (jsonData) json = jsonData;
-    if (!jsonObject) document.body.classList.add('emptyEmbed');
+    if (!jsonObject) {
+      document.body.classList.add('emptyEmbed');
+      document.querySelectorAll('.msgEmbed')[0].children[1].innerText = "";
+    }
 
     try {
       const embed = document.querySelectorAll('.container>.embed')[0];
@@ -869,8 +879,7 @@ addEventListener('DOMContentLoaded', () => {
           if (!embedImageLink) return buildEmbed();
           if (!embedObj.image) {
             hide(embedImageLink.parentElement);
-          }
-          else embedImageLink.src = embedObj.image,
+          } else embedImageLink.src = embedObj.image,
               embedImageLink.parentElement.style.display = 'block';
 
 
@@ -951,14 +960,21 @@ addEventListener('DOMContentLoaded', () => {
       document.body.classList.remove('emptyEmbed');
       externalParsing();
 
-      if (embedElement.innerText.trim() || embedElement.querySelector('.embedGrid > [style*=display] img'))
+      if (embedElement.innerText.trim() || embedElement.querySelector('.embedGrid > [style*=display] img')) {
         embedElement.classList.remove('emptyEmbed');
-      else
+      } else {
         embedElement.classList.add('emptyEmbed');
+      }
+
 
       // Make sure that the embed has no text or any visible images such as custom emojis before hiding.
-      if (!embedCont.innerText.trim() && !embedCont.querySelector('.embedGrid > [style*=display] img'))
+      if (!embedCont.innerText.trim() && !embedCont.querySelector('.embedGrid > [style*=display] img')) {
         document.body.classList.add('emptyEmbed');
+        embedElement.parentElement.parentElement.children[1].innerText = "Empty Embed";
+      } else {
+        embedElement.parentElement.parentElement.children[1].innerText = "";
+      }
+
 
       afterBuilding()
     } catch (e) {
@@ -983,7 +999,7 @@ addEventListener('DOMContentLoaded', () => {
         editor.setCursor(line, text.length)
       }
 
-      json = JSON.parse(editor.getValue());
+      json = JSON.parse("{" + editor.getValue()  + "}");
       const dataKeys = Object.keys(json);
 
       if (dataKeys.length && !jsonKeys.some(key => dataKeys.includes(key))) {
@@ -996,6 +1012,7 @@ addEventListener('DOMContentLoaded', () => {
       buildEmbed();
 
     } catch (e) {
+      console.log(e)
       if (editor.getValue()) return;
       document.body.classList.add('emptyEmbed');
       embedContent.innerHTML = '';
