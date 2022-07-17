@@ -153,7 +153,7 @@ let mainKeys = ["author", "footer", "color", "thumbnail", "image", "fields", "ti
     jsonObject = window.json || {
       title: "Hello everyone :wave:",
       description: "You can use this embed builder for our welcome/leave messages, as well as our custom commands and birthday announcer!",
-      color: 0x41f097,
+      color:  "41f097",
       author: "Click me to invite Mantaro to your server!",
       authorUrl: "https://add.mantaro.site/",
       authorImg: "https://cdn.discordapp.com/avatars/213466096718708737/84b83a87f8e7a1475f989cbbd76c48d8.png",
@@ -895,7 +895,7 @@ addEventListener('DOMContentLoaded', () => {
       }));
       else hide(embedDescription);
 
-      if (obj.color) embedGrid.closest('.embed').style.borderColor = (typeof obj.color === 'number' ? '#' + obj.color.toString(16).padStart(6, "0") : obj.color);
+      if (obj.color) embedGrid.closest('.embed').style.borderColor = (typeof obj.color === 'number' ? '#' + obj.color.toString(16).padStart(6, "0") : '#' + obj.color.replace("0x", ""));
       else embedGrid.closest('.embed').style.removeProperty('border-color');
 
       if (obj.author) display(embedAuthor, `
@@ -1004,7 +1004,10 @@ addEventListener('DOMContentLoaded', () => {
   picker.on?.('exit', removePicker);
   picker.on?.('enter', () => {
     if (jsonObject?.color) {
-      hexInput.value = jsonObject.color.toString(16).padStart(6, '0');
+      hexInput.value = jsonObject.color.padStart(6, '0');
+
+      console.log(hexInput.value)
+
       document.querySelector('.hex.incorrect')?.classList.remove('incorrect');
     }
     colors.classList.add('picking')
@@ -1015,7 +1018,7 @@ addEventListener('DOMContentLoaded', () => {
     const embedObj = jsonObject ??= {};
 
     const clr = el.target.closest('.color');
-    embedObj.color = toRGB(clr.style.backgroundColor, false, true);
+    embedObj.color = toRGB(clr.style.backgroundColor, false, true).toString(16);
     embed && (embed.style.borderColor = clr.style.backgroundColor);
     picker.source.style.removeProperty('background');
   }))
@@ -1027,7 +1030,7 @@ addEventListener('DOMContentLoaded', () => {
       const embedObj = jsonObject;
 
       picker.source.style.background = this.color(r, g, b);
-      embedObj.color = parseInt(this.color(r, g, b).slice(1), 16);
+      embedObj.color = this.color(r, g, b).slice(1);
       embed.style.borderColor = this.color(r, g, b);
       hexInput.value = embedObj.color.toString(16).padStart(6, '0');
     })
@@ -1179,7 +1182,7 @@ addEventListener('DOMContentLoaded', () => {
       return e.target.closest('.hex').classList.add('incorrect');
 
     e.target.closest('.hex').classList.remove('incorrect');
-    jsonObject.color = parseInt(inputValue, 16);
+    jsonObject.color = inputValue.toString();
     buildEmbed();
   })
 
