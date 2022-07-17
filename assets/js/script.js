@@ -155,8 +155,8 @@ let mainKeys = ["author", "footer", "color", "thumbnail", "image", "fields", "ti
     jsonKeys = ["embed", ...mainKeys],
     // 'jsonObject' is used internally, do not change it's value. Use 'json = ...' instead.
     jsonObject = window.json || {
-      title: "Hello everyone :wave:",
-      description: "You can use this embed builder for our welcome/leave messages, as well as our custom commands and birthday announcer!",
+      title: "Please read me! :wave:",
+      description: "You can use this tool for our welcome and leave messages, custom commands and birthday announcer!\nTo get your embed, click the copy button on the top of the screen.\nIf you ever get lost, check out the wiki or ask in our support server.",
       color:  "ff69b4",
       author: "Click me to invite Mantaro to your server!",
       authorUrl: "https://add.mantaro.site/",
@@ -763,10 +763,10 @@ addEventListener('DOMContentLoaded', () => {
           if (Object.keys(embedObj).length < 1) {
             document.querySelector('.gui')?.classList.add('emptyEmbed');
             document.querySelectorAll('.msgEmbed>.container')[0]?.querySelector('.embed')?.classList.add('emptyEmbed');
-            document.querySelectorAll('.msgEmbed')[0].children[1].innerText = "Empty Embed";
+            document.querySelectorAll('.msgEmbed')[1].children[1].innerText = "Empty Embed";
           } else {
             document.querySelectorAll('.msgEmbed>.container')[0]?.querySelector('.emptyEmbed')?.classList.remove('emptyEmbed');
-            document.querySelectorAll('.msgEmbed')[0].children[1].innerText = "";
+            document.querySelectorAll('.msgEmbed')[1].children[1].innerText = "";
           }
         }
     }
@@ -817,7 +817,7 @@ addEventListener('DOMContentLoaded', () => {
     if (jsonData) json = jsonData;
     if (!jsonObject) {
       document.body.classList.add('emptyEmbed');
-      document.querySelectorAll('.msgEmbed')[0].children[1].innerText = "";
+      document.querySelectorAll('.msgEmbed')[1].children[1].innerText = "";
     }
 
     try {

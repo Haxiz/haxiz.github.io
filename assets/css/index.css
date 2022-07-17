@@ -423,11 +423,9 @@ img[alt] {
 }
 
 .msgEmbed {
-    min-height: 2.75rem;
     overflow-wrap: break-word;
     user-select: text;
     width: 100%;
-    margin: 10px 0 0 0;
     padding: calc(0.125rem + 10px) 20px 20px 92px;
 }
 
@@ -2743,7 +2741,6 @@ body.toHook .done .channels .selectOptions .hook {
     }
 
     .msgEmbed {
-        margin: 20px 0 10px 0;
         padding: 0.125rem 10px 20px 65px;
     }
 
@@ -2871,6 +2868,7 @@ body:not(.multiEmbeds) .top>.gui .item.guiEmbedName {
 .topTitle {
     margin-top: 30px;
     margin-left: 30px;
+    margin-bottom: 20px;
 }
 
 .bigTitle {
