@@ -531,7 +531,7 @@ addEventListener('DOMContentLoaded', () => {
                 edit.querySelector('.editAuthorName').value = embed?.author || '';
                 break;
               case 'title':
-                row.querySelector('.editTitle').value = embed?.title || '';
+                edit.querySelector('.editTitle').value = embed?.title || '';
                 break;
               case 'description':
                 edit.querySelector('.editDescription').value = embed?.description || '';
