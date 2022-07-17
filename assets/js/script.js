@@ -24,6 +24,10 @@ let params = currentURL().searchParams,
     hideMenu = localStorage.getItem('hideMenu') || hasParam('hidemenu') || options.hideMenu,
     validationError, activeFields = -1, lastGuiJson, colNum = 1, num = 0;
 
+const stringify = json => {
+  return JSON.stringify(json, null, 4).replaceAll("\\n", "\n").substring(1).slice(0, -1);
+}
+
 const toggleStored = item => {
   const found = localStorage.getItem(item);
   if (!found)
@@ -49,7 +53,7 @@ const createElement = object => {
 }
 
 const jsonToBase64 = (jsonCode, withURL = false, redirect = false) => {
-  let data = btoa(escape((JSON.stringify(typeof jsonCode === 'object' ? jsonCode : json).replaceAll("\\n", "\n"))));
+  let data = btoa(escape((stringify(typeof jsonCode === 'object' ? jsonCode : json))));
 
   if (withURL) {
     const url = currentURL();
@@ -243,7 +247,7 @@ addEventListener('DOMContentLoaded', () => {
       gui = guiParent.querySelector('.gui:first-of-type');
 
   editor = CodeMirror(elt => editorHolder.parentNode.replaceChild(elt, editorHolder), {
-    value: JSON.stringify(json, null, 4).replaceAll("\\n", "\n"),
+    value: stringify(json, null, 4),
     gutters: ["CodeMirror-foldgutter", "CodeMirror-lint-markers"],
     scrollbarStyle: "overlay",
     mode: "application/json",
@@ -303,7 +307,7 @@ addEventListener('DOMContentLoaded', () => {
 
   const allGood = embedObj => {
     let invalid, err;
-    let str = JSON.stringify(embedObj, null, 4).replaceAll("\\n", "\n")
+    let str = stringify(embedObj, null, 4)
     let re = /("(?:icon_)?url": *")((?!\w+?:\/\/).+)"/g.exec(str);
 
     if (embedObj.timestamp && new Date(embedObj.timestamp).toString() === "Invalid Date") {
@@ -470,7 +474,7 @@ addEventListener('DOMContentLoaded', () => {
   }
 
   const display = (el, data, displayType) => {
-    if (data) el.innerHTML = data;
+    if (data) el.innerHTML = data
     el.style.display = displayType || "unset";
   }
 
@@ -706,7 +710,7 @@ addEventListener('DOMContentLoaded', () => {
                 break;
               case 'editAuthorLink':
                 embedObj.authorImg ??= {}, embedObj.authorImg = value;
-                imgSrc(el.target.previousElementSibling, value);
+                imgSrc(document.querySelector("label[for='" + el.target.id + "'] .imgParent"), value);
                 buildEmbed({ only: 'embedAuthorLink', index: 0 });
                 break;
               case 'editAuthorUrl':
@@ -733,7 +737,7 @@ addEventListener('DOMContentLoaded', () => {
                 break;
               case 'editFooterLink':
                 embedObj.footerImg ??= {}, embedObj.footerImg = value;
-                imgSrc(el.target.previousElementSibling, value);
+                imgSrc(document.querySelector("label[for='" + el.target.id + "'] .imgParent"), value);
                 buildEmbed({ only: 'embedFooterLink', index: 0 });
                 break;
             }
@@ -839,7 +843,7 @@ addEventListener('DOMContentLoaded', () => {
             embedThumbnailLink.parentElement.style.display = 'block';
             if (pre) pre.style.maxWidth = '90%';
           } else {
-            embedThumbnailLink.hide(parentElement);
+            hide(embedThumbnailLink.parentElement)
             pre?.style.removeProperty('max-width');
           }
 
@@ -847,7 +851,9 @@ addEventListener('DOMContentLoaded', () => {
         case 'embedImage':
           const embedImageLink = embed?.querySelector('.embedImageLink');
           if (!embedImageLink) return buildEmbed();
-          if (!embedObj.image) embedImageLink.hide(parentElement);
+          if (!embedObj.image) {
+            hide(embedImageLink.parentElement);
+          }
           else embedImageLink.src = embedObj.image,
               embedImageLink.parentElement.style.display = 'block';
 
@@ -947,7 +953,7 @@ addEventListener('DOMContentLoaded', () => {
 
   editor.on('change', editor => {
     // If the editor value is not set by the user, reuturn.
-    if (JSON.stringify(json, null, 4).replaceAll("\\n", "\n") === editor.getValue()) return;
+    if (stringify(json, null, 4) === editor.getValue()) return;
 
     try {
       // Autofill when " is typed on new line
@@ -1042,7 +1048,7 @@ addEventListener('DOMContentLoaded', () => {
     hljs.highlightBlock(block);
 
   document.querySelector('.opt.gui').addEventListener('click', () => {
-    if (lastGuiJson && lastGuiJson !== JSON.stringify(json, null, 4).replaceAll("\\n", "\n"))
+    if (lastGuiJson && lastGuiJson !== stringify(json, null, 4))
       buildGui();
 
     lastGuiJson = false
@@ -1061,7 +1067,7 @@ addEventListener('DOMContentLoaded', () => {
         // Clicked GUI tab while a blank embed is added from GUI.
       return error(gui.querySelectorAll('.item.guiEmbedName')[emptyEmbedIndex].innerText.split(':')[0] + ' should not be empty.', '3s');
 
-    const jsonStr = JSON.stringify(json, null, 4).replaceAll("\\n", "\n");
+    const jsonStr = stringify(json, null, 4);
     lastGuiJson = jsonStr;
 
     document.body.classList.remove('gui');
@@ -1083,7 +1089,7 @@ addEventListener('DOMContentLoaded', () => {
     buildEmbed();
     buildGui();
 
-    const jsonStr = JSON.stringify(json, null, 4).replaceAll("\\n", "\n");
+    const jsonStr = stringify(json, null, 4);
     editor.setValue(jsonStr === '{}' ? '{\n\t\n}' : jsonStr);
 
     for (const e of document.querySelectorAll('.gui .item'))
@@ -1190,7 +1196,7 @@ addEventListener('DOMContentLoaded', () => {
 
   document.querySelector('.top-btn.copy').addEventListener('click', e => {
     const mark = e.target.closest('.top-btn.copy').querySelector('.mark'),
-        jsonData = JSON.stringify(json, null, 4).replaceAll("\\n", "\n"),
+        jsonData = stringify(json, null, 4),
         next = () => {
           mark.classList.remove('hidden');
           mark.previousElementSibling.classList.add('hidden');

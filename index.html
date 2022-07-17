@@ -233,15 +233,17 @@
                     <div class="item author rows2 active">
                         <p class="ttle">Author</p>
                     </div>
-                    <div class="edit">
+                    <div class="edit larger">
                         <div class="linkName">
+                            <label for="editAuthorLink"><span>Image URL <span class="imgParent"></span></span></label>
                             <div class="editIcon">
-                                <span class="imgParent"></span>
-                                <input class="editAuthorLink" type="text" placeholder="Icon URL" autocomplete="off">
+                                <input id="editAuthorLink" class="editAuthorLink" type="text" placeholder="Icon URL" autocomplete="off">
                             </div>
+                            <label for="editAuthorLink"><span>URL</span></label>
                             <div class="editUrl">
                                 <input class="editAuthorUrl" type="text" placeholder="URL" autocomplete="off">
                             </div>
+                            <label for="editAuthorLink"><span>Text</span></label>
                             <div class="editName">
                                 <input class="editAuthorName" type="text" maxlength="256" placeholder="Author name"
                                        autocomplete="off">
@@ -361,12 +363,13 @@
                     </div>
                     <div class="edit">
                         <div class="linkName">
+                            <label for="editFooterLink"><span>Image URL <span class="imgParent"></span></span></label>
                             <div class="editIcon">
-                                <span class="imgParent"></span>
-                                <input class="editFooterLink" type="text" placeholder="Icon URL" autocomplete="off">
+                                <input id="editFooterLink" class="editFooterLink" type="text" placeholder="Icon URL" autocomplete="off">
                             </div>
+                            <label for="editFooterText"><span>Text</span></label>
                             <div class="editName">
-                                <input class="editFooterText" type="text" maxlength="2048" value="Footer text"
+                                <input id="editFooterText" class="editFooterText" type="text" maxlength="2048" value="Footer text"
                                        placeholder="Footer text" autocomplete="off">
                             </div>
                         </div>

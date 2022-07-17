@@ -1549,6 +1549,13 @@ textarea {
     margin-left: 15px;
     transform: translateY(2px);
     z-index: 1;
+    width: 100%;
+    max-width: 100%;
+}
+
+.inlineCheck input {
+    width: inherit !important;
+    max-width: unset !important;
 }
 
 .top>.gui .item:not(.active)+.edit {
@@ -1574,19 +1581,16 @@ textarea {
     display: flex;
 }
 
-.editIcon,
-.editName,
-.editIcon input,
-.editName input {
-    width: 100%;
-    overflow: hidden;
-}
-
-.editIcon .imgParent {
+.linkName label .imgParent {
     width: 24px;
     height: 24px;
     object-fit: contain;
     border-radius: 50%;
+    vertical-align:middle
+}
+
+.linkName label span {
+    font-weight: 600;
 }
 
 .editIcon>* {
@@ -1701,6 +1705,15 @@ input#timestamp::-webkit-calendar-picker-indicator {
 
 .linkName {
     display: flex;
+    flex-direction: column;
+}
+
+.linkName div {
+    padding-bottom: 5px;
+}
+
+.linkName label {
+    margin-top: 12px;
 }
 
 .linkName,
@@ -1715,7 +1728,11 @@ input#timestamp::-webkit-calendar-picker-indicator {
 }
 
 .top>.gui .item.rows2+.edit {
-    height: 80px;
+    height: 130px;
+}
+
+.top>.gui .item.rows2+.edit.larger {
+    height: 180px;
 }
 
 input[type="file"],
@@ -1948,10 +1965,6 @@ body {
 
 .item:not(.largeImg)+.edit .imgParent[style*="content"] {
     transform: scale(1);
-}
-
-.item:not(.largeImg)+.edit .imgParent {
-    transform: scale(2);
 }
 
 @keyframes addFieldFade {
