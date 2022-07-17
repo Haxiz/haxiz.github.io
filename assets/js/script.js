@@ -153,7 +153,7 @@ let mainKeys = ["author", "footer", "color", "thumbnail", "image", "fields", "ti
     jsonObject = window.json || {
       title: "Hello everyone :wave:",
       description: "You can use this embed builder for our welcome/leave messages, as well as our custom commands and birthday announcer!",
-      color:  "41f097",
+      color:  "ff69b4",
       author: "Click me to invite Mantaro to your server!",
       authorUrl: "https://add.mantaro.site/",
       authorImg: "https://cdn.discordapp.com/avatars/213466096718708737/84b83a87f8e7a1475f989cbbd76c48d8.png",
@@ -980,7 +980,7 @@ addEventListener('DOMContentLoaded', () => {
 
   const picker = new CP(document.querySelector('.picker'), state = { parent: document.querySelector('.cTop') });
 
-  picker.fire?.('change', toRGB('#41f097'));
+  picker.fire?.('change', toRGB('#ff69b4'));
 
   let colors = document.querySelector('.colors'),
       hexInput = colors?.querySelector('.hex>div input'),
