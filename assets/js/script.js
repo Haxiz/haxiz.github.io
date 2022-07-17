@@ -25,7 +25,7 @@ let params = currentURL().searchParams,
     validationError, activeFields = -1, lastGuiJson, colNum = 1, num = 0;
 
 const stringify = json => {
-  return JSON.stringify(json, null, 4).replaceAll("\\n", "\n").substring(1).slice(0, -1);
+  return JSON.stringify(json, null, 4).replaceAll("\\n", "\n").substring(2).slice(0, -1);
 }
 
 const toggleStored = item => {
@@ -67,8 +67,8 @@ const jsonToBase64 = (jsonCode, withURL = false, redirect = false) => {
 };
 
 const base64ToJson = data => {
-  const jsonData = unescape(atob(data || dataSpecified)).replaceAll("\n", "\\n");
-  return typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+  const jsonData = unescape(atob(data || dataSpecified)).replaceAll("\\n", "\n");
+  return typeof jsonData === 'string' ? JSON.parse("{" + jsonData + "}") : jsonData;
 };
 
 const toRGB = (hex, reversed, integer) => {
@@ -234,7 +234,7 @@ addEventListener('DOMContentLoaded', () => {
   } else {
     if (username) document.querySelector('.username').textContent = username;
     if (avatar) document.querySelector('.avatar').src = avatar;
-    if (verified) document.querySelector('.msgEmbed > .contents').classList.add('verified');
+    if (verified) document.querySelectorAll('.msgEmbed > .contents').forEach(e => e.classList.add('verified'));
   }
 
   for (const e of document.querySelectorAll('.clickable > img'))
@@ -247,7 +247,7 @@ addEventListener('DOMContentLoaded', () => {
       gui = guiParent.querySelector('.gui:first-of-type');
 
   editor = CodeMirror(elt => editorHolder.parentNode.replaceChild(elt, editorHolder), {
-    value: stringify(json, null, 4),
+    value: stringify(json),
     gutters: ["CodeMirror-foldgutter", "CodeMirror-lint-markers"],
     scrollbarStyle: "overlay",
     mode: "application/json",
@@ -307,7 +307,7 @@ addEventListener('DOMContentLoaded', () => {
 
   const allGood = embedObj => {
     let invalid, err;
-    let str = stringify(embedObj, null, 4)
+    let str = stringify(embedObj)
     let re = /("(?:icon_)?url": *")((?!\w+?:\/\/).+)"/g.exec(str);
 
     if (embedObj.timestamp && new Date(embedObj.timestamp).toString() === "Invalid Date") {
@@ -672,6 +672,7 @@ addEventListener('DOMContentLoaded', () => {
             return error('Failed to find the index of the field to remove.');
 
           jsonObject.fields.splice(fieldIndex, 1);
+          if (jsonObject.fields.length <= 0) delete jsonObject.fields;
 
           buildEmbed();
           e.closest('.field').remove();
@@ -703,42 +704,57 @@ addEventListener('DOMContentLoaded', () => {
                 if (guiEmbedName?.classList.contains('guiEmbedName'))
                   guiEmbedName.querySelector('.text').innerHTML = `${guiEmbedName.innerText.split(':')[0]}${value ? `: <span>${value}</span>` : ''}`;
                 buildEmbed({ only: 'embedTitle', index: 0 });
+                if (embedObj.title === "") delete embedObj.title
                 break;
               case 'editAuthorName':
-                embedObj.author ??= {}, embedObj.author = value;
+                embedObj.author ??= {}
+                embedObj.author = value;
                 buildEmbed({ only: 'embedAuthorName', index: 0 });
                 break;
               case 'editAuthorLink':
-                embedObj.authorImg ??= {}, embedObj.authorImg = value;
+                embedObj.authorImg ??= {}
+                embedObj.authorImg = value;
                 imgSrc(document.querySelector("label[for='" + el.target.id + "'] .imgParent"), value);
                 buildEmbed({ only: 'embedAuthorLink', index: 0 });
+                if (embedObj.authorImg === "") delete embedObj.authorImg
                 break;
               case 'editAuthorUrl':
-                embedObj.authorUrl ??= {}, embedObj.authorUrl = value;
+                embedObj.authorUrl ??= {}
+                embedObj.authorUrl = value;
                 buildEmbed({ only: 'editAuthorUrl', index: 0 });
+                if (embedObj.authorUrl === "") delete embedObj.authorUrl
                 break;
               case 'editDescription':
                 embedObj.description = value;
                 buildEmbed({ only: 'embedDescription', index: 0 });
+                if (embedObj.description === "") delete embedObj.description
                 break;
               case 'editThumbnailLink':
-                embedObj.thumbnail ??= {}, embedObj.thumbnail = value;
+                embedObj.thumbnail ??= {}
+                embedObj.thumbnail = value;
                 imgSrc(el.target.closest('.editIcon').querySelector('.imgParent'), value);
                 buildEmbed({ only: 'embedThumbnail', index: 0 });
+                if (embedObj.thumbnail === "") delete embedObj.thumbnail
                 break;
               case 'editImageLink':
-                embedObj.image ??= {}, embedObj.image = value;
+                embedObj.image ??= {}
+                embedObj.image = value;
                 imgSrc(el.target.closest('.editIcon').querySelector('.imgParent'), value);
                 buildEmbed({ only: 'embedImageLink', index: 0 });
+                if (embedObj.image === "") delete embedObj.image
                 break;
               case 'editFooterText':
-                embedObj.footer ??= {}, embedObj.footer = value;
+                embedObj.footer ??= {}
+                embedObj.footer = value;
                 buildEmbed({ only: 'embedFooterText', index: 0 });
+                if (embedObj.footer === "") delete embedObj.footer
                 break;
               case 'editFooterLink':
-                embedObj.footerImg ??= {}, embedObj.footerImg = value;
+                embedObj.footerImg ??= {}
+                embedObj.footerImg = value;
                 imgSrc(document.querySelector("label[for='" + el.target.id + "'] .imgParent"), value);
                 buildEmbed({ only: 'embedFooterLink', index: 0 });
+                if (embedObj.footerImg === "") delete embedObj.footerImg
                 break;
             }
           }
@@ -953,7 +969,9 @@ addEventListener('DOMContentLoaded', () => {
 
   editor.on('change', editor => {
     // If the editor value is not set by the user, reuturn.
-    if (stringify(json, null, 4) === editor.getValue()) return;
+    if (stringify(json) === editor.getValue()) {
+      return;
+    }
 
     try {
       // Autofill when " is typed on new line
@@ -1042,13 +1060,13 @@ addEventListener('DOMContentLoaded', () => {
     })
   }, 1000)
 
-  document.querySelector('.timeText').innerText = timestamp();
+  document.querySelectorAll('.timeText').forEach(t => t.innerText = timestamp());
 
   for (const block of document.querySelectorAll('.markup pre > code'))
     hljs.highlightBlock(block);
 
   document.querySelector('.opt.gui').addEventListener('click', () => {
-    if (lastGuiJson && lastGuiJson !== stringify(json, null, 4))
+    if (lastGuiJson && lastGuiJson !== stringify(json))
       buildGui();
 
     lastGuiJson = false
@@ -1062,12 +1080,7 @@ addEventListener('DOMContentLoaded', () => {
   })
 
   document.querySelector('.opt.json').addEventListener('click', () => {
-    const emptyEmbedIndex = indexOfEmptyGuiEmbed(false);
-    if (emptyEmbedIndex !== -1)
-        // Clicked GUI tab while a blank embed is added from GUI.
-      return error(gui.querySelectorAll('.item.guiEmbedName')[emptyEmbedIndex].innerText.split(':')[0] + ' should not be empty.', '3s');
-
-    const jsonStr = stringify(json, null, 4);
+    const jsonStr = stringify(json);
     lastGuiJson = jsonStr;
 
     document.body.classList.remove('gui');
@@ -1089,7 +1102,7 @@ addEventListener('DOMContentLoaded', () => {
     buildEmbed();
     buildGui();
 
-    const jsonStr = stringify(json, null, 4);
+    const jsonStr = stringify(json);
     editor.setValue(jsonStr === '{}' ? '{\n\t\n}' : jsonStr);
 
     for (const e of document.querySelectorAll('.gui .item'))
@@ -1196,7 +1209,7 @@ addEventListener('DOMContentLoaded', () => {
 
   document.querySelector('.top-btn.copy').addEventListener('click', e => {
     const mark = e.target.closest('.top-btn.copy').querySelector('.mark'),
-        jsonData = stringify(json, null, 4),
+        jsonData = stringify(json),
         next = () => {
           mark.classList.remove('hidden');
           mark.previousElementSibling.classList.add('hidden');

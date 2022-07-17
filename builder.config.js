@@ -10,7 +10,7 @@
 options = {
     username: 'Mantaro',
     avatar: 'https://cdn.discordapp.com/avatars/213466096718708737/84b83a87f8e7a1475f989cbbd76c48d8.webp?size=40',
-    verified: false,
+    verified: true,
     noUser: false,
     dataSpecified: false,
     guiTabs: ['author', 'description'],

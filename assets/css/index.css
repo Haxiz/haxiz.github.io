@@ -169,13 +169,14 @@ body.gui .side1 .item.top {
 
 .main .side2 {
     height: 100%;
-    justify-content: center;
     vertical-align: center;
     overflow: auto;
     scrollbar-color: #26272d #36393f;
     scrollbar-width: thin;
     font-family: DsWhitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: var(--fullEmbedBackground);
+    display: flex;
+    flex-direction: column;
 }
 
 ::-webkit-scrollbar {
@@ -423,7 +424,6 @@ img[alt] {
 
 .msgEmbed {
     min-height: 2.75rem;
-    position: absolute;
     overflow-wrap: break-word;
     user-select: text;
     width: 100%;
@@ -1884,6 +1884,9 @@ body {
 @media screen and (max-width: 1600px) {
     .fieldNumber::before {
         right: 35px;
+    }
+    .embedFields {
+        display: block !important;
     }
 }
 
