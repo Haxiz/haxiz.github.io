@@ -1,0 +1,23 @@
+name: Question
+description: Ask a general question about the Mantaro Embed Maker
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |-
+        If you are not banned from it, please instead consider using our [support server](https://support.mantaro.site) to ask questions.
+  - type: checkboxes
+    attributes:
+      label: Before submitting, make sure that
+      description: Please ensure you have done all the below things before you submit.
+      options:
+        - label: You are not asking for general bot support.
+          required: true
+  - type: textarea
+    attributes:
+      label: Your question
+      description: Please ask your question with the most possible detail.
+      placeholder: My question is...
+    validations:
+      required: true
