@@ -25,7 +25,7 @@ let params = currentURL().searchParams,
     validationError, activeFields = -1, lastGuiJson, colNum = 1, num = 0;
 
 const stringify = json => {
-  return JSON.stringify(json, null, 4).replaceAll("\\n", "\n").substring(2).slice(0, -1);
+  return JSON.stringify(json, null, 4).replaceAll("\\n", "\n").substring(2).slice(0, -1).replaceAll("\": ", "\":");
 }
 
 const toggleStored = item => {
